@@ -112,6 +112,7 @@ class PiecesCLI:
         commit_parser.add_argument("-p","--push",dest="push",action="store_true", help="push the code to github")
         commit_parser.add_argument("-a","--all",dest="all_flag",action="store_true", help="stage all the files before commiting")
         commit_parser.add_argument("-i","--issues",dest="issue_flag",action="store_true", help="add issue number in the commit message")
+        commit_parser.add_argument("--auto",dest="auto",action="store_true", help="automatically commit without asking")
         commit_parser.set_defaults(func=git_commit)
 
     def run(self):

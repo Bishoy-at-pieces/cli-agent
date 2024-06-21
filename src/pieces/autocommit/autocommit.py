@@ -116,7 +116,7 @@ def create_seeded_asset(file_path:str,content:str) -> Seed:
 def git_commit(**kwargs):
     if kwargs.get("all_flag",False):
         subprocess.run(["git", "add", "-A"], check=True)
-
+    auto_flag = kwargs.get("auto",False)
     issue_flag = kwargs.get('issue_flag')
     try:
         changes_summary,seeds = get_current_working_changes()
@@ -132,7 +132,7 @@ def git_commit(**kwargs):
         
 
     # Check if the user wants to commit the changes or change the commit message
-    r_message = input(f"The generated commit message is:\n\n {commit_message}\n\nAre you sure you want to commit these changes?\n\n- y: Yes\n- n: No\n- c: Change the commit message\n\nPlease enter your choice (y/n/c): ").lower().strip()
+    r_message = input(f"The generated commit message is:\n\n {commit_message}\n\nAre you sure you want to commit these changes?\n\n- y: Yes\n- n: No\n- c: Change the commit message\n\nPlease enter your choice (y/n/c): ").lower().strip() if not auto_flag else "y"
     
     if r_message == "y" or r_message == "c" or not r_message: # Accept by default if the user did not write anything 
         # Changing the commit message if the user wants to
@@ -146,13 +146,13 @@ def git_commit(**kwargs):
             if issue_number:
                 print("Issue Number: ", issue_number)
                 print("Issue Title: ", issue_title)
-                r_issue = input("Is this issue related to the commit? (y/n): ")
+                r_issue = input("Is this issue related to the commit? (y/n): ") if not auto_flag else "y"
                 if r_issue.lower() == "y":
                     commit_message += f" (issue: #{issue_number})"
                 else:
                     issue_number = None
             # Print the issues if we cant find the issie
-            if issue_number == None and issue_markdown:
+            if issue_number and issue_markdown and not auto_flag:
                 console = Console()
                 md = Markdown(issue_markdown)
                 console.print(md)
