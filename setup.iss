@@ -1,5 +1,5 @@
 [Setup]
-AppName=PiecesCLI
+AppName=Pieces CLI
 AppVersion=1.0
 DefaultDirName={pf}\PiecesCLI
 DefaultGroupName=PiecesCLI

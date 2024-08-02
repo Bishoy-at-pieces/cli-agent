@@ -127,6 +127,38 @@ jobs:
           name: setup
           path: setup.exe
 
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      ### Checking out our Repo
+      - uses: actions/checkout@v3
+
+      ### Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install poetry -U
+          poetry install 
+
+      ### Building Standalone Package
+      - name: Build stand alone
+        run: |
+          poetry run pyinstaller -c --onefile src/pieces/app.py --hidden-import=pydantic_core --name=pieces
+
+      ### Create macOS installer
+      - name: Create macOS installer
+        run: |
+          mkdir -p package-root/usr/local/bin
+          cp dist/pieces package-root/usr/local/bin/
+          pkgbuild --root package-root --identifier com.pieces_cli.app --version 1.0 --install-location /usr/local/bin pieces.pkg
+
+      ### Upload macOS installer
+      - name: Upload macOS installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos-installer
+          path: pieces.pkg
+
 
   ### Pushing the built packages to GCP and GitHub
   push-build:
