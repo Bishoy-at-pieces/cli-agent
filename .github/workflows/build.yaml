@@ -121,6 +121,12 @@ jobs:
           path: ./setup.iss
           options: /O+
 
+      - name: Upload Setup Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: setup
+          path: setup.exe
+
 
   ### Pushing the built packages to GCP and GitHub
   push-build:
