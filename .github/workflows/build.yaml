@@ -223,4 +223,4 @@ jobs:
   
   build-installer:
     needs: build-standalone
-    uses: ./.github/workflows/build.yaml
+    uses: ./.github/workflows/build_windows.yaml
