@@ -8,18 +8,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-      - name: Setup Inno Setup
-        uses: docker://ghcr.io/goreleaser/inno-setup:latest
-
-      - name: Run Inno Setup
-        run: iscc setup.iss
-
-      - name: Upload installer
-        uses: actions/upload-artifact@v2
-        with:
-          name: installer
-          path: |
-            setup.exe
+    - name: Compile .ISS to .EXE Installer
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+      with:
+        path: src/setup.iss
+          setup.exe
