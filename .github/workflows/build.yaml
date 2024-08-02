@@ -76,9 +76,10 @@ jobs:
         run: |
           poetry run pyinstaller -c --onefile src/pieces/app.py  --hidden-import=pydantic_core --name=pieces
 
-      - uses: zhuzichu520/inno-setup-action@v1.0.0
-        with: 
-            filepath: './setup.iss'
+      - uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: ./setup.iss
+          options: /O+
 
       ### Writing our staging version to a file to be pulled in the last step to update our json in the cloud
       - name: Write staging version to file
