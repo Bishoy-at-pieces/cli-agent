@@ -102,13 +102,21 @@ jobs:
     steps:
       ### Checking out our Repo
       - uses: actions/checkout@v3
-      
+
+      ### Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install poetry -U
+          poetry install 
+
       ### Building Standalone Package
       - name: Build stand alone
         run: |
-          poetry run pyinstaller -c --onefile src/pieces/app.py  --hidden-import=pydantic_core --name=pieces
+          poetry run pyinstaller -c --onefile src/pieces/app.py --hidden-import=pydantic_core --name=pieces
 
-      - uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+      ### Building Windows Installer
+      - name: Build Windows Installer
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
         with:
           path: ./setup.iss
           options: /O+
