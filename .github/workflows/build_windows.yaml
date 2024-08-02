@@ -1,0 +1,30 @@
+name: Build Inno Setup Installer
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Inno Setup
+        uses: docker://ghcr.io/goreleaser/inno-setup:latest
+
+      - name: Run Inno Setup
+        run: iscc setup.iss
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: installer
+          path: |
+            setup.exe
