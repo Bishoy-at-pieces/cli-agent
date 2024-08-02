@@ -146,12 +146,22 @@ jobs:
         run: |
           poetry run pyinstaller -c --onefile src/pieces/app.py --hidden-import=pydantic_core --name=pieces
 
+      ### Create post-install script
+      - name: Create post-install script
+        run: |
+          echo '#!/bin/bash' > postinstall
+          echo 'echo "export PATH=/usr/local/bin:\$PATH" >> ~/.bash_profile' >> postinstall
+          echo 'echo "export PATH=/usr/local/bin:\$PATH" >> ~/.zshrc' >> postinstall
+          chmod +x postinstall
+
       ### Create macOS installer
       - name: Create macOS installer
         run: |
           mkdir -p package-root/usr/local/bin
           cp dist/pieces package-root/usr/local/bin/
-          pkgbuild --root package-root --identifier com.pieces_cli.app --version 1.0 --install-location /usr/local/bin pieces.pkg
+          mkdir -p package-root/usr/local/bin/scripts
+          cp postinstall package-root/usr/local/bin/scripts/
+          pkgbuild --root package-root --identifier com.pieces_cli.app --version 1.0 --install-location /usr/local/bin --scripts package-root/usr/local/bin/scripts pieces.pkg
 
       ### Upload macOS installer
       - name: Upload macOS installer
@@ -159,7 +169,6 @@ jobs:
         with:
           name: macos-installer
           path: pieces.pkg
-
 
   ### Pushing the built packages to GCP and GitHub
   push-build:
