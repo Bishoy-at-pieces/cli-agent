@@ -16,5 +16,4 @@ Name: "{group}\PiecesCLI"; Filename: "{app}\PiecesCLI.exe"
 Name: "{group}\{cm:UninstallProgram,PiecesCLI}"; Filename: "{uninstallexe}"
 
 [Registry]
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandstring; ValueName: "pieces"; ValueData: "{app}"; Flags: uninsdeletevalue
-
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandsz; ValueName: "pieces"; ValueData: "{app}"; Flags: uninsdeletevalue
