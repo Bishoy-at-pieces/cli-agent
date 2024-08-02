@@ -1,12 +1,7 @@
-name: Build Inno Setup Installer
+name: Build installer windows
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   build:
