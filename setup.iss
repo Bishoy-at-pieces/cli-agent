@@ -16,5 +16,5 @@ Name: "{group}\PiecesCLI"; Filename: "{app}\PiecesCLI.exe"
 Name: "{group}\{cm:UninstallProgram,PiecesCLI}"; Filename: "{uninstallexe}"
 
 [Registry]
-; Add PiecesCLI to the system PATH
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandstring; ValueData: "{olddata};{app}"; Flags: uninsdeletevalue
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; ValueType: expandstring; ValueName: "pieces"; ValueData: "{app}"; Flags: uninsdeletevalue
+
