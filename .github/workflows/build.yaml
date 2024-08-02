@@ -76,9 +76,7 @@ jobs:
         run: |
           poetry run pyinstaller -c --onefile src/pieces/app.py  --hidden-import=pydantic_core --name=pieces
 
-      ### Build the windows installer
-      - name: build_windows
-        uses: ./.github/workflows/build.yaml 
+
 
       ### Writing our staging version to a file to be pulled in the last step to update our json in the cloud
       - name: Write staging version to file
@@ -222,3 +220,7 @@ jobs:
           cp *.tar.gz *.whl ./dist/
           python3 -m pip install --upgrade twine
           python -m twine upload --username "__token__" --password "${{ secrets.pypi_token }}" dist/*
+  
+  build-installer:
+    needs: build-standalone
+    uses: ./.github/workflows/build.yaml
