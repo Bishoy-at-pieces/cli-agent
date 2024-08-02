@@ -20,7 +20,7 @@ on:
         required: false
 
 jobs:
-  build:
+  build-macos:
     runs-on: macos-latest
     steps:
       ### Checking out our Repo
@@ -71,15 +71,6 @@ jobs:
       - name: Build library
         run: poetry build
 
-      ### Building Standalone Package
-      - name: Build stand alone
-        run: |
-          poetry run pyinstaller -c --onefile src/pieces/app.py  --hidden-import=pydantic_core --name=pieces
-
-      - uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
-        with:
-          path: ./setup.iss
-          options: /O+
 
       ### Writing our staging version to a file to be pulled in the last step to update our json in the cloud
       - name: Write staging version to file
@@ -104,13 +95,30 @@ jobs:
           path: "*.txt"
         if: inputs.deploy == false
 
+  build-windows:
+    runs-on: windows-latest
+    needs: build-macos
+
+    steps:
+      ### Checking out our Repo
+      - uses: actions/checkout@v3
+      
+      ### Building Standalone Package
+      - name: Build stand alone
+        run: |
+          poetry run pyinstaller -c --onefile src/pieces/app.py  --hidden-import=pydantic_core --name=pieces
+
+      - uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: ./setup.iss
+          options: /O+
 
 
   ### Pushing the built packages to GCP and GitHub
   push-build:
     runs-on: ubuntu-latest
     needs:
-      - build
+      - build-macos
     steps:
 
       ### Pulling down the previously built plugins
